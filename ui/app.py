@@ -120,17 +120,26 @@ with tab1:
     st.markdown("See how FRONTLINE handles different scenarios in real-time.")
     
     col1, col2 = st.columns([2, 1])
-    
+
     with col1:
         demo_msgs = get_demo_dataset()
+
         selected_demo = st.selectbox(
             "Select a demo message:",
-            options=[f"[{m['id']}] {m['description'][:50]}" for m in demo_msgs],
+            options=[
+                f"[{m['id']}] {m['description'][:50]}"
+                for m in demo_msgs
+            ],
             index=0
         )
-        demo_idx = int(selected_demo.split("]")[0][1:])
-        selected_msg = demo_msgs[demo_idx]
-    
+
+        selected_id = selected_demo.split("]")[0][1:]
+
+        selected_msg = next(
+            m for m in demo_msgs
+            if m["id"] == selected_id
+        )
+
     with col2:
         st.metric(
             "📝 Message ID",
